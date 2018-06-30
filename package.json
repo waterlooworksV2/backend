@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "dev": "NODE_ENV=development nodemon app.js | bunyan -o short",
+    "test:dev": "mocha --exit --timeout 30000 tests/server_test.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "bunyan": "^1.8.12",
+    "chai": "^4.1.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "^3.1.0",
+    "dotenv": "^6.0.0",
+    "elasticsearch": "^15.1.1",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "mocha": "^5.2.0",
+    "mongoosastic": "^4.4.1",
+    "mongoose": "^5.2.5",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "pug": "2.0.0-beta11",
+    "sequelize": "^4.38.0",
+    "stopword": "^0.1.10",
+    "supertest": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "nodemon": "^1.18.3"
+  }
+}
