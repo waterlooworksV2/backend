@@ -27,9 +27,8 @@ jobController.previewFindId = async (req, res, next) => {
     if (Number.isNaN(id) || id < 0) {
       return res.status(400).send({ message: `${req.params.sampleid} is not a valid index id` });
     }
-    var index = await jobService.findById(id)
-    index = index ? {'_id' : index['_id'], 'Job Summary:' : index['Job Summary:'].length > 400 ? index['Job Summary:'].substring(0, 400 - 3) + "..." : index['Job Summary:'].substring(0, 400)} : index;
-    // console.log(index);
+    var index = await jobService.findById(id);
+    index = index ? {"Job Title:": index["Job Title:"], "Organization:": index["Organization:"], '_id' : index['_id'], 'Job Summary:' : index['Job Summary:'].length > 400 ? index['Job Summary:'].substring(0, 400 - 3) + "..." : index['Job Summary:'].substring(0, 400)} : index;
     return index ? res.send(index) : res.status(404).json({ message: `index ${id} not found` })
   } catch(e) {
     console.log(e);
