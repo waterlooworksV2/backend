@@ -5,9 +5,9 @@ const { Job } = require('../../models');
 
 const jobService = require('../services/jobService');
 
-const indexController = {};
+const jobController = {};
 
-indexController.findId = async (req, res, next) => {
+jobController.findId = async (req, res, next) => {
   try{
     const id = String(req.params.sampleid);
     if (Number.isNaN(id) || id < 0) {
@@ -23,7 +23,7 @@ indexController.findId = async (req, res, next) => {
 
 var query = {query:{"match_all": {}}};
 
-indexController.default = async (req, res, next) => {
+jobController.search = async (req, res, next) => {
   const multi_match = {};
   if (req.query.q) {
     const query = req.query.q;
@@ -49,4 +49,4 @@ indexController.default = async (req, res, next) => {
   }
 };
 
-module.exports = indexController;
+module.exports = jobController;

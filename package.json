@@ -12,6 +12,7 @@
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "chai": "^4.1.2",
+    "connect-cas": "^1.8.1",
     "cookie-parser": "~1.4.3",
     "debug": "^3.1.0",
     "dotenv": "^6.0.0",
