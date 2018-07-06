@@ -7,15 +7,27 @@ describe('Route Tests', () => {
   before(() => mongoose.connect(process.env.DB_URI, { useNewUrlParser: true }))
   after(() => mongoose.connection.close())
 
-  it('Sample job by _id returned successfully', () => (
+  it('PREVIEW: Sample job by _id returned successfully', () => (
     request(app)
-      .get('/v1/job/62303')
+      .get('/v1/preview/62303')
       .expect(200)
   ));
 
-  it('Bad request (parameter) _id for job returns fail', () => (
+  it('PREVIEW: Bad request (parameter) _id for job returns fail', () => (
     request(app)
-      .get('/v1/job/bad_product_id')
+      .get('/v1/preview/bad_product_id')
+      .expect(404)
+  ));
+
+  it('FULL: Sample job by _id returned successfully', () => (
+    request(app)
+      .get('/v1/full/62303')
+      .expect(200)
+  ));
+
+  it('FULL: Bad request (parameter) _id for job returns fail', () => (
+    request(app)
+      .get('/v1/full/bad_product_id')
       .expect(404)
   ));
 
