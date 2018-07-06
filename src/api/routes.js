@@ -12,7 +12,8 @@ const router = express.Router();
 router.get('/v1/id/search', [isPaginated], idController.search)
 
 router.get('/v1/job/search', [isPaginated], jobController.search)
-router.get('/v1/job/:sampleid', jobController.findId)
+router.get('/v1/preview/:sampleid', jobController.previewFindId)
+router.get('/v1/full/:sampleid', jobController.fullFindId)
 
 
 module.exports = router;
