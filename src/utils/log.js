@@ -25,7 +25,7 @@ const resSerializer = (req, res) => ({
 
 // Set up bunyan logger
 const log = bunyan.createLogger({
-  name: 'mixology',
+  name: 'WaterlooFinallyWorks',
   serializers: {
     req: reqSerializer,
     res: resSerializer,

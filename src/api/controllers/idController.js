@@ -7,13 +7,12 @@ const jobService = require('../services/jobService');
 
 const idController = {};
 
-var query = {query:{"match_all": {}}};
-
 idController.search = async (req, res, next) => {
   const { pageSize, page } = req.context.pagination;
+  var query = [];
   if(req.query.q === "") {
     var match_all = {};
-    const query = {
+    query = {
       size: pageSize,
       from: pageSize * page,
       query: { match_all }
@@ -21,7 +20,7 @@ idController.search = async (req, res, next) => {
   } else {
     const multi_match = {};
     if (req.query.q) {
-      const query = req.query.q;
+      query = req.query.q;
       multi_match.query = query;
       multi_match.fields=['Job Title:', 'Job - Province / State:'];
     }
@@ -32,7 +31,7 @@ idController.search = async (req, res, next) => {
       query: { multi_match }
     };
   }
-
+  console.log(query);
   try {
     const results = await jobService.search(query);
     const docs = results.hits.hits;

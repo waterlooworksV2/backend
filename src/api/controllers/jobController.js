@@ -36,13 +36,12 @@ jobController.previewFindId = async (req, res, next) => {
   }
 };
 
-var query = {query:{"match_all": {}}};
-
 jobController.search = async (req, res, next) => {
   const { pageSize, page } = req.context.pagination;
+  var query = {};
   if(req.query.q === "") {
     var match_all = {};
-    const query = {
+    query = {
       size: pageSize,
       from: pageSize * page,
       query: { match_all }
@@ -55,7 +54,7 @@ jobController.search = async (req, res, next) => {
       multi_match.fields=['Job Title:', 'Job - Province / State:'];
     }
 
-    const query = {
+    query = {
       size: pageSize,
       from: pageSize * page,
       query: { multi_match }
