@@ -49,11 +49,9 @@ jobController.search = async (req, res, next) => {
   } else {
     const multi_match = {};
     if (req.query.q) {
-      const query = req.query.q;
-      multi_match.query = query;
+      multi_match.query = req.query.q;
       multi_match.fields=['Job Title:', 'Job - Province / State:'];
     }
-
     query = {
       size: pageSize,
       from: pageSize * page,

@@ -9,6 +9,7 @@ const idController = {};
 
 idController.search = async (req, res, next) => {
   const { pageSize, page } = req.context.pagination;
+  console.log("here", req.query);
   var query = [];
   if(req.query.q === "") {
     var match_all = {};
@@ -20,12 +21,10 @@ idController.search = async (req, res, next) => {
   } else {
     const multi_match = {};
     if (req.query.q) {
-      query = req.query.q;
-      multi_match.query = query;
+      multi_match.query = req.query.q;
       multi_match.fields=['Job Title:', 'Job - Province / State:'];
     }
-
-    const query = {
+    query = {
       size: pageSize,
       from: pageSize * page,
       query: { multi_match }
