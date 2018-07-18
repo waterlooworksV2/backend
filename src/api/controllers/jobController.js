@@ -50,7 +50,7 @@ jobController.search = async (req, res, next) => {
     const multi_match = {};
     if (req.query.q) {
       multi_match.query = req.query.q;
-      multi_match.fields=['Job Title:', 'Job - Province / State:'];
+      multi_match.fields=['Job Title:', 'Job - Province / State:', 'Targeted Degrees and Disciplines:'];
     }
     query = {
       size: pageSize,
@@ -63,7 +63,7 @@ jobController.search = async (req, res, next) => {
     const results = await jobService.search(query);
     const docs = results.hits.hits;
 
-    res.json(docs);
+    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }

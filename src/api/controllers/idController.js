@@ -9,7 +9,6 @@ const idController = {};
 
 idController.search = async (req, res, next) => {
   const { pageSize, page } = req.context.pagination;
-  console.log("here", req.query);
   var query = [];
   if(req.query.q === "") {
     var match_all = {};
@@ -22,7 +21,7 @@ idController.search = async (req, res, next) => {
     const multi_match = {};
     if (req.query.q) {
       multi_match.query = req.query.q;
-      multi_match.fields=['Job Title:', 'Job - Province / State:'];
+      multi_match.fields=['Job Title:', 'Job - Province / State:', 'Targeted Degrees and Disciplines:'];
     }
     query = {
       size: pageSize,
@@ -30,15 +29,15 @@ idController.search = async (req, res, next) => {
       query: { multi_match }
     };
   }
-  console.log(query);
   try {
     const results = await jobService.search(query);
+    console.log(results);
     const docs = results.hits.hits;
     var ids = []
     for(i in docs){
       ids.push(docs[i]["_id"])
     }
-    res.json(ids);
+    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }
