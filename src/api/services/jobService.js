@@ -6,7 +6,10 @@ const findAll = query => DrinkRecipe.findAll(query);
 
 const search = query => new Promise((resolve, reject) => {
   Job.esSearch(query, (err, res) => {
-    if (err) return reject(err);
+    if (err) {
+      console.log(err);
+      return reject(err);
+    }
     resolve(res);
   });
 });

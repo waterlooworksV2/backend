@@ -21,18 +21,43 @@ idController.search = async (req, res, next) => {
     const multi_match = {};
     if (req.query.q) {
       multi_match.query = req.query.q;
-      multi_match.fields=['Job Title:', 'Job - Province / State:', 'Targeted Degrees and Disciplines:'];
+      multi_match.fields=['Job Title:', 'Targeted Degrees and Disciplines:', 'Organization:'];
     }
     query = {
       size: pageSize,
       from: pageSize * page,
-      query: { multi_match }
+      query: {
+        bool :{
+          "should": [
+            { "match": { 'Job Title:':req.query.q }},
+            { "match": { 'Targeted Degrees and Disciplines:':req.query.q }},
+            { "match": { 'Organization:':req.query.q }}
+          ],
+          'filter': [
+            {"match": {
+              "Job - City:": "Waterloo"
+            }}
+          ]
+        }
+      }
     };
+    // query = {
+    //   size: pageSize,
+    //   from: pageSize * page,
+    //   query: {
+    //     bool :{
+    //       "should": [
+    //         { "match": { 'Targeted Degrees and Disciplines:':req.query.q }}
+    //       ]
+    //     }
+    //   }
+    // };
   }
   try {
+    console.log("ASJDBASOJD", query);
     const results = await jobService.search(query);
-    console.log(results);
     const docs = results.hits.hits;
+    console.log(docs);
     var ids = []
     for(i in docs){
       ids.push(docs[i]["_id"])
