@@ -31,18 +31,32 @@ describe('Route Tests', () => {
       .expect(404)
   ));
 
-  it('Sample job search', () => (
+  it('IDS: Sample job search', () => (
     request(app)
       .get('/v1/job/search?q=data%20analyst')
-      .expect(res => assert(res.body.length>0))
+      .expect(res => assert(res.body))
+      .expect(res => assert(res.body.ids.length > 0))
       .expect(200)
   ));
 
-  it('Sample id search', () => (
+  it('IDS: Sample id search', () => (
     request(app)
       .get('/v1/id/search?q=data%20analyst')
-      .expect(res => assert(res.body.length>0))
+      .expect(res => assert(res.body))
+      .expect(res => assert(res.body.ids.length > 0))
       .expect(200)
+  ));
+
+  it('ALL: List of cities returned successfully', () => (
+      request(app)
+          .get('/v1/filter/country')
+          .expect(200)
+  ));
+
+  it('ALL: List of cities returned successfully', () => (
+      request(app)
+          .get('/v1/filter/city')
+          .expect(200)
   ));
 
 });

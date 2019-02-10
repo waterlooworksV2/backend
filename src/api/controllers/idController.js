@@ -54,11 +54,9 @@ idController.search = async (req, res, next) => {
     // };
   }
   try {
-    console.log("ASJDBASOJD", query);
     const results = await jobService.search(query);
     const docs = results.hits.hits;
-    console.log(docs);
-    var ids = []
+    var ids = [];
     for(i in docs){
       ids.push(docs[i]["_id"])
     }

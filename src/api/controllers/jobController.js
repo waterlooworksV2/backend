@@ -62,8 +62,11 @@ jobController.search = async (req, res, next) => {
   try {
     const results = await jobService.search(query);
     const docs = results.hits.hits;
-
-    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
+    var ids = [];
+    for(i in docs){
+        ids.push(docs[i]["_id"])
+    }
+    res.status(200).json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }
