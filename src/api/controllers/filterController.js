@@ -49,7 +49,7 @@ filterController.country = async (req, res, next) => {
 
 filterController.city = async (req, res, next) => {
     try {
-        let results = await count('$Job - City:', 1, false);
+        let results = await count('$Job - City:', -1, true);
         res.json(results);
     } catch (e) {
         next(e);
@@ -57,37 +57,14 @@ filterController.city = async (req, res, next) => {
 
 };
 
-filterController.search = async (req, res, next) => {
-    const { pageSize, page } = req.context.pagination;
-    var query = {};
-    if(req.query.q === "") {
-        var match_all = {};
-        query = {
-            size: pageSize,
-            from: pageSize * page,
-            query: { match_all }
-        };
-    } else {
-        const multi_match = {};
-        if (req.query.q) {
-            multi_match.query = req.query.q;
-            multi_match.fields=['Job Title:', 'Job - Province / State:', 'Targeted Degrees and Disciplines:'];
-        }
-        query = {
-            size: pageSize,
-            from: pageSize * page,
-            query: { multi_match }
-        };
-    }
-
+filterController.cover = async (req, res, next) => {
     try {
-        const results = await jobService.search(query);
-        const docs = results.hits.hits;
-
-        res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
+        let results = await count('$Application Documents Required:', -1, true);
+        res.json(results);
     } catch (e) {
         next(e);
     }
+
 };
 
 module.exports = filterController;

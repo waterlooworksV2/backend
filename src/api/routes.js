@@ -12,6 +12,7 @@ const router = express.Router();
 router.get('/v1/id/search', [isPaginated], idController.search)
 router.get('/v1/filter/country', filterController.country)
 router.get('/v1/filter/city', filterController.city)
+router.get('/v1/filter/cover', filterController.cover)
 router.get('/v1/job/search', [isPaginated], jobController.search)
 router.get('/v1/preview/:sampleid', jobController.previewFindId)
 router.get('/v1/full/:sampleid', jobController.fullFindId)
