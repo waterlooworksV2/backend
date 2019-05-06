@@ -37,6 +37,8 @@ jobController.previewFindId = async (req, res, next) => {
 };
 
 jobController.search = async (req, res, next) => {
+  console.log('LMASDOASDIOASJD')
+  log.info('LMASDOASDIOASJD', req);
   const { pageSize, page } = req.context.pagination;
   var query = {};
   if(req.query.q === "") {
@@ -62,11 +64,16 @@ jobController.search = async (req, res, next) => {
   try {
     const results = await jobService.search(query);
     const docs = results.hits.hits;
+    console.log(results);
+
+    log.info(docs);
     var ids = [];
     for(i in docs){
         ids.push(docs[i]["_id"])
     }
-    res.status(200).json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
+    log.info(Math.ceil(results.hits.total.value/pageSize));
+    console.log('aha')
+    res.status(200).json({"pages": Math.ceil(results.hits.total.value/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }
