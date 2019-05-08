@@ -35,7 +35,7 @@ idController.search = async (req, res, next) => {
           ],
           'filter': [
             {"match": {
-              "Job - City:": "Waterloo"
+              "Job - Country:": "United States"
             }}
           ]
         }
