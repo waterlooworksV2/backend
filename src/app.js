@@ -1,4 +1,7 @@
 const createError = require('http-errors');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -8,6 +11,16 @@ const { log, logMiddleware } = require('./utils/log');
 const routes = require('./api/routes');
 
 var app = express();
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
 // setup cross origin
 app.use((req, res, next) => {
@@ -51,4 +64,12 @@ app.use(function(err, req, res, next) {
   res.status(statusCode).send({ message: err.message });
 });
 
-module.exports = app;
+// Starting both http & https servers
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+module.exports = {
+  app,
+  httpServer,
+  httpsServer
+};
