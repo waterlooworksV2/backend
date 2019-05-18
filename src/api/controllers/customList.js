@@ -6,7 +6,7 @@ const jobService = require('../services/jobService');
 const customList = {};
 
 const customListIndexToKey = {
-  0: 'US',
+  0: 'United States',
   1: 'Canada',
   2: 'Toronto',
   3: 'Kitchener/Waterloo'
@@ -27,6 +27,7 @@ customList.customListIDs = async (req, res, next) => {
           return res.status(404).send({ message: `${req.params.sampleid} is not a valid list id` });
         }
         const query = customListToQuery[customListIndexToKey[id]]
+        console.log(query)
         var index = await jobService.paginate({q: query,
                                                page:page+1,
                                                limit:pageSize,
