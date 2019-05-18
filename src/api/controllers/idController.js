@@ -1,5 +1,5 @@
 const queryUtils = require('../../utils/queryUtils');
-const log = require('../../utils/log');
+const { extraLogger } = require('../../utils/log');
 
 const { Job } = require('../../models');
 
@@ -57,10 +57,12 @@ idController.search = async (req, res, next) => {
     const results = await jobService.search(query);
     const docs = results.hits.hits;
     var ids = [];
+    extraLogger.info(results.hits, results.hits.total);
+    // extraLogger.info(results.hits.total)
     for(i in docs){
       ids.push(docs[i]["_id"])
     }
-    res.json({"pages": Math.ceil(results.hits.total.value/pageSize), "ids": ids});
+    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }

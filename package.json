@@ -5,6 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=development nodemon app.js | bunyan -o short",
+    "local": "NODE_ENV=development LOCAL=T nodemon app.js | bunyan -o short",
     "test:dev": "mocha --exit --timeout 30000 tests/server_test.js"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "mocha": "^5.2.0",
     "mongoosastic": "^4.4.1",
     "mongoose": "^5.2.5",
+    "mongoose-paginate-v2": "^1.2.1",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",

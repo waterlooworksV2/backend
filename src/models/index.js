@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const mongoosastic = require('mongoosastic');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const elasticsearch = require('elasticsearch');
 
 const jobs = require('./JobSchema');
@@ -11,10 +12,12 @@ const esClient = new elasticsearch.Client({
 });
 
 jobs.plugin(mongoosastic, {
-  index: "jobs_new",
+  index: "jobs_f19",
   esClient: esClient,
   hydrate: true
 });
+
+jobs.plugin(mongoosePaginate);
 
 const Job = mongoose.model('jobs_complete', jobs, 'jobs_complete');
 var stream = Job.synchronize(), count = 0;

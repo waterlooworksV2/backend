@@ -10,17 +10,21 @@ const { log, logMiddleware } = require('./utils/log');
 
 const routes = require('./api/routes');
 
+let credentials;
 var app = express();
+if(!process.env.LOCAL){
+	const privateKey = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/privkey.pem', 'utf8');
+	const certificate = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/cert.pem', 'utf8');
+	const ca = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/chain.pem', 'utf8');
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/backend.waterlooworks2.com/chain.pem', 'utf8');
-
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca
-};
+	credentials = {
+		key: privateKey,
+		cert: certificate,
+		ca: ca
+	};
+} else{
+	credentials = {};
+}
 
 // setup cross origin
 app.use((req, res, next) => {
