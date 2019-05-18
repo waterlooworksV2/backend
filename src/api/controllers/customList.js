@@ -30,7 +30,7 @@ customList.customListIDs = async (req, res, next) => {
         for(i in index['docs']){
           ids.push(index["docs"][i]["_id"])
         }
-        res.send({"pages": index.totalPages, "ids": ids});
+        res.send({"pages": index.totalPages-1, "ids": ids});
     } catch (e) {
         next(e);
     }
