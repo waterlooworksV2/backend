@@ -6,11 +6,17 @@ const jobService = require('../services/jobService');
 const customList = {};
 
 const customListIndexToKey = {
-  0: 'US'
+  0: 'US',
+  1: 'Canada',
+  2: 'Toronto',
+  3: 'Kitchener/Waterloo'
 }
 
 const customListToQuery = {
-  'US': {"Job - Country:" : "United States"}
+  'United States': {"Job - Country:" : "United States"},
+  'Canada': {"Job - Country:" : "Canada"},
+  'Toronto': {"Job - City:" : "Toronto"},
+  'Kitchener/Waterloo': { $or: [{"Job - City:" : "Waterloo"}, {"Job - City:" : "Kitchener"}] }
 }
 
 customList.customListIDs = async (req, res, next) => {
@@ -30,7 +36,7 @@ customList.customListIDs = async (req, res, next) => {
         for(i in index['docs']){
           ids.push(index["docs"][i]["_id"])
         }
-        res.send({"pages": index.totalPages-1, "ids": ids});
+        res.send({"pages": index.totalPages-1, "ids": ids, "listName": customListIndexToKey[id]});
     } catch (e) {
         next(e);
     }
