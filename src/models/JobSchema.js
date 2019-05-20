@@ -138,6 +138,10 @@ const jobs = new Schema({
  'viewed': {
    type: Boolean,
    es_indexed: true
+ },
+ 'count': {
+   type: Number,
+   es_indexed: true
  }
 },
 {

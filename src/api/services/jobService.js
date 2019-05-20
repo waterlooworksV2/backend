@@ -23,7 +23,8 @@ const paginate = query => new Promise((resolve, reject) => {
     query['q'],
     {
       page: query['page'],
-      limit:query['limit']
+      limit:query['limit'],
+      sort: {"Organization:": 1}
     }, (err, res) => {
     if (err) {
       console.log(err);

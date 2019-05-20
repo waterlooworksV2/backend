@@ -15,13 +15,15 @@ idController.search = async (req, res, next) => {
     query = {
       size: pageSize,
       from: pageSize * page,
-      query: { match_all }
+      query: { match_all },
+      sort: { "count" : {"order" : "asc"}}
     };
+    extraLogger.info('here')
   } else {
     const multi_match = {};
     if (req.query.q) {
       multi_match.query = req.query.q;
-      multi_match.fields=['Job Title:', 'Targeted Degrees and Disciplines:', 'Organization:'];
+      multi_match.fields=['_id', 'Job Title:', 'Targeted Degrees and Disciplines:', 'Organization:'];
     }
     query = {
       size: pageSize,
@@ -29,6 +31,7 @@ idController.search = async (req, res, next) => {
       query: {
         bool :{
           "should": [
+            { "match": { '_id:':req.query.q }},
             { "match": { 'Job Title:':req.query.q }},
             { "match": { 'Targeted Degrees and Disciplines:':req.query.q }},
             { "match": { 'Organization:':req.query.q }}
@@ -58,11 +61,10 @@ idController.search = async (req, res, next) => {
     const docs = results.hits.hits;
     var ids = [];
     extraLogger.info(results.hits, results.hits.total);
-    // extraLogger.info(results.hits.total)
     for(i in docs){
       ids.push(docs[i]["_id"])
     }
-    res.json({"pages": Math.ceil(results.hits.total.value/pageSize), "ids": ids});
+    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }

@@ -9,14 +9,16 @@ const customListIndexToKey = {
   0: 'United States',
   1: 'Canada',
   2: 'Toronto',
-  3: 'Kitchener/Waterloo'
+  3: 'Kitchener/Waterloo',
+  4: 'Apple'
 }
 
 const customListToQuery = {
   'United States': {"Job - Country:" : "United States"},
   'Canada': {"Job - Country:" : "Canada"},
   'Toronto': {"Job - City:" : "Toronto"},
-  'Kitchener/Waterloo': { $or: [{"Job - City:" : "Waterloo"}, {"Job - City:" : "Kitchener"}] }
+  'Kitchener/Waterloo': { $or: [{"Job - City:" : "Waterloo"}, {"Job - City:" : "Kitchener"}] },
+  'Apple': {"Organization:" : "Apple Inc"}
 }
 
 customList.customListIDs = async (req, res, next) => {
