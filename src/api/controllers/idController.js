@@ -64,7 +64,7 @@ idController.search = async (req, res, next) => {
     for(i in docs){
       ids.push(docs[i]["_id"])
     }
-    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
+    res.json({"pages": Math.ceil(results.hits.total.value/pageSize), "ids": ids});
   } catch (e) {
     next(e);
   }
