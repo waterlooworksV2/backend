@@ -9,7 +9,7 @@ const jobController = {};
 
 jobController.fullFindId = async (req, res, next) => {
   try{
-    const id = String(req.params.sampleid);
+    const id = String(req.params.jobid);
     if (Number.isNaN(id) || id < 0) {
       return res.status(400).send({ message: `${req.params.sampleid} is not a valid index id` });
     }
@@ -23,7 +23,7 @@ jobController.fullFindId = async (req, res, next) => {
 
 jobController.previewFindId = async (req, res, next) => {
   try{
-    const id = String(req.params.sampleid);
+    const id = String(req.params.jobid);
     if (Number.isNaN(id) || id < 0) {
       return res.status(400).send({ message: `${req.params.sampleid} is not a valid index id` });
     }

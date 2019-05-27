@@ -1,7 +1,7 @@
 require('dotenv').config();
 const {httpServer, app, httpsServer} = require('./app');
 const { log } = require('./utils/log');
-const { mongoose, Job } = require('./models/index')
+const { mongoose, Job, List } = require('./models/index')
 
 const { LOCAL_PORT, HTTP_PORT, HTTPS_PORT, DB_URI} = process.env
 const stream = Job.synchronize();
