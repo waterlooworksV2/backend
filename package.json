@@ -9,7 +9,7 @@
     "test:dev": "mocha --exit --timeout 30000 tests/server_test.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "chai": "^4.1.2",
