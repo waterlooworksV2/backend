@@ -23,6 +23,7 @@
 2. mongodb:
   - Get the data dump from one of the existing contributors
   - Extract the dump.zip file and navigate to that directory in terminal
+  <!--  mongodump --collection jobs_complete --db jobs_f19-->
   - Use: `mongorestore dump` to get all the data into the required database
   - If you installed using brew: `brew services start mongodb` to start mongodb
 

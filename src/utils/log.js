@@ -33,6 +33,11 @@ const log = bunyan.createLogger({
   level: process.env.NODE_ENV !== 'development' ? 'fatal' : 'info'
 });
 
+const extraLogger = bunyan.createLogger({
+  name: 'WaterlooFinallyWorks2',
+  level: process.env.NODE_ENV !== 'development' ? 'fatal' : 'info'
+});
+
 // use logger as a middleware
 const logMiddleware = (req, res, next) => {
   log.info(reqSerializer(req), 'log-request');
@@ -46,5 +51,6 @@ const logMiddleware = (req, res, next) => {
 
 module.exports = {
   log,
+  extraLogger,
   logMiddleware
 };

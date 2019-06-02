@@ -57,14 +57,22 @@ filterController.city = async (req, res, next) => {
 
 };
 
-filterController.cover = async (req, res, next) => {
+filterController.filter = async (req, res, next) => {
     try {
-        let results = await count('$Application Documents Required:', -1, true);
+        let results = await count('$Job - City:', -1, true);
         res.json(results);
     } catch (e) {
         next(e);
     }
+};
 
+filterController.cover = async (req, res, next) => {
+    try {
+        let results = await count('$cover_letter', -1, true);
+        res.json(results);
+    } catch (e) {
+        next(e);
+    }
 };
 
 module.exports = filterController;
