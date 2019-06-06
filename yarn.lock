@@ -3511,10 +3511,10 @@ statuses@~1.4.0:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
   integrity sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
 
-stopword@^0.1.10:
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/stopword/-/stopword-0.1.19.tgz#a56e763c0cd6888c2fb1b44eac34757156badf4f"
-  integrity sha512-oKkl/LClyJ2YLWm2xZvIiCUGiTsggj+BPOQyt3IKtPUJZj43jYxFJEmXvP1VZQvMuexdodMBshL4sVUSPURmwg==
+stopword@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/stopword/-/stopword-0.2.4.tgz#41d1d8a072926affc5d331d5caa1f91fd847143c"
+  integrity sha512-cPrTLrcUq10+N6i66xeFQKyEV5E9KGAxC9Omzl8oSX3Q8zp6Q/VPstU626u/S94E/vd02X5W4Vw21WQvGiMInw==
 
 string-width@^1.0.1:
   version "1.0.2"
