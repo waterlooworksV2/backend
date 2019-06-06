@@ -23,7 +23,7 @@
     "http": "^0.0.0",
     "http-errors": "~1.6.2",
     "https": "^1.0.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.4",
     "mongoosastic": "^4.4.1",
     "mongoose": "^5.5.13",
     "mongoose-paginate-v2": "^1.2.1",
