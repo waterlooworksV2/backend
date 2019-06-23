@@ -41,6 +41,8 @@ app.use(cookieParser());
 // Setup logger middleware
 app.use(logMiddleware);
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
 // Setup context for pagination
 app.use((req, res, next) => {
   req.context = req.context || {};

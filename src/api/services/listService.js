@@ -3,6 +3,12 @@ const { extraLogger } = require('../../utils/log');
 
 const find = query => List.find(query);
 
+const findOne = query => List.findOne(query);
+
+const findMaxListNo = query => List.findOne().sort('-ListId');
+
+const findOneAndRemove = query => List.findOneAndRemove();
+
 const findById = id => List.findById(id);
 
 const findAll = query => List.findAll(query);
@@ -35,6 +41,9 @@ const paginate = query => new Promise((resolve, reject) => {
 
 module.exports = {
   find,
+  findOne,
+  findMaxListNo,
+  findOneAndRemove,
   findById,
   findAll,
   search,

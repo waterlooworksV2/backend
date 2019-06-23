@@ -6,7 +6,7 @@ const { mongoose, Job, List } = require('./models/index')
 const { LOCAL_PORT, HTTP_PORT, HTTPS_PORT, DB_URI} = process.env
 const stream = Job.synchronize();
 
-mongoose.connect(DB_URI, { useNewUrlParser: true }).then(() => {
+mongoose.connect(DB_URI, { useCreateIndex: true, useNewUrlParser: true, useFindAndModify: false }).then(() => {
   if(!process.env.LOCAL){
     httpServer.listen(HTTP_PORT, () => {
     	log.info(`HTTP Server Listening on port ${HTTP_PORT}`);

@@ -16,7 +16,7 @@ const router = express.Router();
 var jsonParser = bodyParser.json()
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
 
 // Searching ID routes
 router.get('/v1/id/search', [isPaginated], idController.search)
@@ -29,7 +29,7 @@ router.get('/v1/filter/cover', filterController.cover)
 
 // Custom Lists
 router.get('/v1/list/:listid', [isPaginated], listController.jobIDs)
-router.post('/v1/list/:jobid', listController.create)
+router.post('/v1/list/:jobid', [urlencodedParser], listController.create)
 router.patch('/v1/list/add/:listid', [urlencodedParser], listController.addJob)
 router.patch('/v1/list/rem/:listid', [urlencodedParser], listController.remJob)
 router.delete('/v1/list/:listid', listController.delete)

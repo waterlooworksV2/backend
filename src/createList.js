@@ -7,10 +7,14 @@ const { LOCAL_PORT, HTTP_PORT, HTTPS_PORT, DB_URI} = process.env
 mongoose.connect(DB_URI, { useNewUrlParser: true }).then(() => {
   var l5 = new List({
     _id: new mongoose.Types.ObjectId(),
-    ListId: 5,
+    ListId: 4,
     Name: 'Test List',
     JobIds: [],
-    Users: [-1],
+    permission: {
+      public: false,
+      owner: 'First',
+      visible: [],
+    }
   });
   l5.save(function(err) {
     if (err) throw err;

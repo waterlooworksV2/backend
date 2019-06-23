@@ -21,7 +21,7 @@ jobs.plugin(mongoosastic, {
 jobs.plugin(mongoosePaginate);
 
 const Job = mongoose.model('jobs_complete', jobs, 'jobs_complete');
-const List = mongoose.model('list', lists, 'list');
+const List = mongoose.model('lists', lists, 'lists');
 
 var stream = Job.synchronize(), count = 0;
 

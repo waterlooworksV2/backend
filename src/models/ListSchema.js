@@ -1,23 +1,49 @@
 const Schema = require('mongoose').Schema
 
-const lists = new Schema({
+const permissions = new Schema({
   _id: Schema.Types.ObjectId,
+  'public': {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  'owner': {
+    type: String,
+    required: true,
+  },
+  'visible': {
+    type: [String],
+    required: true,
+    default: [],
+  }
+})
+
+const lists = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+  },
   'ListId': {
-    type: Number
+    type: Number,
+    required: true,
+    unique: true,
   },
   'Name': {
-    type: String
+    type: String,
+    es_indexed: true,
   },
   'JobIds': {
-    type: [Number]
+    type: [Number],
+    default: [],
   },
-  'Users': {
-    type: [Number]
-  },
+  permission: {
+    type: permissions,
+    required: true,
+  }
 },
 {
   autoCreate: true,
-  collection: 'list'
+  collection: 'lists'
 })
 
 module.exports = lists;

@@ -45,13 +45,13 @@ const distinct = query => new Promise((resolve, reject) => {
 });
 
 const aggregate = query => new Promise((resolve, reject) => {
-    Job.aggregate(query, (err, res) => {
-        if (err) {
-            console.log(err);
-            return reject(err);
-        }
-        resolve(res);
-    });
+  Job.aggregate(query, (err, res) => {
+    if (err) {
+        console.log(err);
+        return reject(err);
+    }
+    resolve(res);
+  });
 });
 
 module.exports = {
