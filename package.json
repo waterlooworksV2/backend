@@ -31,7 +31,7 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^2.0.0",
     "pug": "2.0.0-beta11",
-    "sequelize": ">=5.3.0",
+    "sequelize": ">=5.9.2",
     "stopword": "^0.2.4",
     "supertest": "^3.1.0"
   },
