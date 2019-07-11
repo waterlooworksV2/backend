@@ -1030,10 +1030,10 @@ elasticsearch@13.3.0:
     lodash.isempty "^4.4.0"
     lodash.trimend "^4.5.1"
 
-elasticsearch@^15.1.1:
-  version "15.5.0"
-  resolved "https://registry.yarnpkg.com/elasticsearch/-/elasticsearch-15.5.0.tgz#62d9f238cf9e10b81c50a2303aa470c1f7da6b37"
-  integrity sha512-ZGKKaDkOFAap61ObBNkAxhYXCcAbRfkI4NVoSeLGnTD6/cItvY2j9LII/VV8/zclGe1x5m6DsVp47E4ze4aAeQ==
+elasticsearch@^16.3.0:
+  version "16.3.0"
+  resolved "https://registry.yarnpkg.com/elasticsearch/-/elasticsearch-16.3.0.tgz#d8268e5dcb0d01e76b705bac8f8665cc557d5163"
+  integrity sha512-Xy4vma+YJD2I3vudoV5RIgcMFnc/69SVef/BGOtmicvgUdzYs5mLY66FIANb5KnVS60i+zsnhvf/bYJYJklBsg==
   dependencies:
     agentkeepalive "^3.4.1"
     chalk "^1.0.0"
