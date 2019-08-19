@@ -16,7 +16,7 @@
     "connect-cas": "^1.8.1",
     "cookie-parser": "~1.4.3",
     "debug": "^3.1.0",
-    "dotenv": "^6.0.0",
+    "dotenv": "^8.1.0",
     "elasticsearch": "^15.1.1",
     "express": "~4.16.0",
     "fs": "^0.0.1-security",
