@@ -73,6 +73,7 @@ listController.create = async (req, res, next) => {
     }else{
       var maxListNumber = 0;
     }
+    console.log(req.body.owner)
     var l5 = new List({
       ListId: Math.max(maxListNumber, maxCustomListNumber)+1,
       Name: req.body.Name,
@@ -98,8 +99,11 @@ listController.create = async (req, res, next) => {
 listController.addJob = async (req, res, next) => {
   try {
     const listid = Number(req.params.listid);
+    console.log(req.body)
     const jobids = req.body.jobids;
+    console.log(listid)
     List.findOne({ListId: listid}, function(err, doc){
+      console.log(doc)
       if (err) return res.send(500, { error: err });
       for (var i = 0; i < jobids.length; i++) {
         var flag = true;
@@ -167,6 +171,17 @@ listController.edit = async (req, res, next) => {
     console.log(req.params);
     console.log(listid);
     res.send({listid: listid});
+  } catch (e) {
+    next(e);
+  }
+};
+
+listController.usersLists = async (req, res, next) => {
+  try {
+    // share and rename
+    const userid = Number(req.params.userid);
+    let lists = await listService.find({Users: userid})
+    res.send({lists: lists});
   } catch (e) {
     next(e);
   }

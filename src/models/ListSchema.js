@@ -36,6 +36,10 @@ const lists = new Schema({
     type: [Number],
     default: [],
   },
+  'Users': {
+    type: [Number],
+    default: [],
+  },
   permission: {
     type: permissions,
     required: true,

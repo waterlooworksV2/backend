@@ -29,6 +29,7 @@ router.get('/v1/filter/cover', filterController.cover)
 
 // Custom Lists
 router.get('/v1/list/:listid', [isPaginated], listController.jobIDs)
+router.get('/v1/list/user/:userid', [isPaginated], listController.usersLists)
 router.post('/v1/list/:jobid', [urlencodedParser], listController.create)
 router.patch('/v1/list/add/:listid', [urlencodedParser], listController.addJob)
 router.patch('/v1/list/rem/:listid', [urlencodedParser], listController.remJob)
