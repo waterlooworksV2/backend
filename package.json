@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/waterlooworksV2/backend.git",
+  "author": "Aditya Arora <10962267+arora-aditya@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=production node src/index.js"
+  }
+}
