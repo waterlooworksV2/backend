@@ -9,7 +9,8 @@
 | GET    	| None                                          	| `/user/`               	| `{...}`<br>get current user details, <br>lists owned 	|
 | POST   	| `username`,`email`, <br>`password`,<br>`name` 	| `/user/`               	| `{...}`<br>creates a user with given details         	|
 | POST   	| `username`, <br>`password`                    	| `/login`               	| `{...}`<br>logs user in, returns JWT                 	|
-| DELETE 	| `jobID`,`listID`                              	| `/list/:listID/:jobID` 	| `{...}`<br>remove jobID from listID                  	|
+| DELETE 	| `email`, password                             	| `/users/` 	| `{...}`<br>delete user with given details   
+                	|
 
 ### Jobs
 | Type 	| Parameters 	| URL                 	| Response                       	|

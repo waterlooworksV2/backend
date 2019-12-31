@@ -31,6 +31,20 @@ router.post('/', auth.optional, (req, res, next) => {
     .then(() => res.json({ user: finalUser.toAuthJSON() }));
 });
 
+//GET current route (required, only authenticated users have access)
+router.delete('/', auth.required, (req, res, next) => {
+  const { payload: { id } } = req;
+
+  return Users.findById(id).deleteOne()
+    .then((user) => {
+      if(!user) {
+        return res.sendStatus(400);
+      }
+
+      return res.json({ id: id });
+    });
+});
+
 //POST login route (optional, everyone has access)
 router.post('/login', auth.optional, (req, res, next) => {
   const { body: { user } } = req;
@@ -62,7 +76,7 @@ router.post('/login', auth.optional, (req, res, next) => {
       return res.json({ token: user.token });
     }
 
-    return status(400).info;
+    return res.status(400).info;
   })(req, res, next);
 });
 

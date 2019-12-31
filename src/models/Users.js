@@ -45,8 +45,3 @@ UsersSchema.methods.toAuthJSON = function() {
 };
 
 let Model = mongoose.model('Users', UsersSchema);
-Model.init().then(function() {
-  Model.create([{ name: 'Val' }, { name: 'Val' }], function(err) {
-    console.log(err);
-  });
-});

@@ -30,7 +30,12 @@ if(!isProduction) {
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb://localhost/passport-tutorial');
+mongoose.connect('mongodb://localhost/passport-tutorial',
+{
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 mongoose.set('debug', true);
 
 //Models & routes
