@@ -4,8 +4,7 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const Users = mongoose.model('Users');
 
-//POST new user route (optional, everyone has access)
-router.post('/', auth.optional, (req, res, next) => {
+router.post('/', auth.optional, async (req, res, next) => {
   const { body: { user } } = req;
   if(!user.email) {
     return res.status(422).json({
@@ -22,31 +21,48 @@ router.post('/', auth.optional, (req, res, next) => {
       },
     });
   }
-
   const finalUser = new Users(user);
 
   finalUser.setPassword(user.password);
-
-  return finalUser.save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
+  try {
+    await finalUser.save();
+    res.json({ user: finalUser.toAuthJSON() });
+  } catch(err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      // Duplicate user
+      return res.status(422).send({ 
+        succes: false, 
+        message: `User with email:${user.email} already exists!` 
+      });
+    }
+    next(err);
+  }
 });
 
-//GET current route (required, only authenticated users have access)
-router.delete('/', auth.required, (req, res, next) => {
+router.delete('/', auth.required, async (req, res, next) => {
   const { payload: { id } } = req;
-
-  return Users.findById(id).deleteOne()
-    .then((user) => {
-      if(!user) {
-        return res.sendStatus(400);
-      }
-
-      return res.json({ id: id });
+  const user = await Users.findById(id);
+  
+  if(!user) {
+    return res.status(404).send({
+      status: 'User not found'
     });
+  }
+  const email = user.email;
+  try {
+    user.deleteOne();
+  } catch (err) {
+    next(err);
+  }
+  
+  return res.json({ 
+    email: email,
+    status: 'deleted',
+  });
+    
 });
 
-//POST login route (optional, everyone has access)
-router.post('/login', auth.optional, (req, res, next) => {
+router.post('/login', auth.optional, async (req, res, next) => {
   const { body: { user } } = req;
   if(!user.email) {
     return res.status(422).json({
@@ -63,8 +79,8 @@ router.post('/login', auth.optional, (req, res, next) => {
       },
     });
   }
-
-  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+  
+  return passport.authenticate('local', { session: true }, (err, passportUser, info) => {
     if(err) {
       return next(err);
     }
@@ -75,24 +91,17 @@ router.post('/login', auth.optional, (req, res, next) => {
 
       return res.json({ token: user.token });
     }
-
-    return res.status(400).info;
+    return res.status(401).send(info);
   })(req, res, next);
 });
 
-//GET current route (required, only authenticated users have access)
-router.get('/current', auth.required, (req, res, next) => {
-  console.log("here")
+router.get('/current', auth.required, async (req, res, next) => {
   const { payload: { id } } = req;
-
-  return Users.findById(id)
-    .then((user) => {
-      if(!user) {
-        return res.sendStatus(400);
-      }
-
-      return res.json({ user: user.toAuthJSON() });
-    });
+  const user = await Users.findById(id);
+  if(!user) {
+    return res.sendStatus(401);
+  }
+  return res.json({ user: user.toAuthJSON() });
 });
 
 module.exports = router;

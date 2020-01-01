@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -12,6 +13,8 @@ mongoose.promise = global.Promise;
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
 
+const { LOCAL_PORT, SECRET } = process.env
+
 //Initiate our app
 const app = express();
 
@@ -22,26 +25,34 @@ app.use(bodyParser.urlencoded({
   extended: true 
 }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
-
-if(!isProduction) {
-  app.use(errorHandler());
-}
+app.use(session({ 
+  secret: SECRET, 
+  cookie: { 
+    maxAge: 60000 
+  }, 
+  resave: false, 
+  saveUninitialized: false 
+}));
 
 //Configure Mongoose
-mongoose.connect('mongodb://localhost/passport-tutorial',
+mongoose.connect(process.env.DB_URI,
 {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-mongoose.set('debug', true);
+
+if(!isProduction) {
+  app.use(errorHandler());
+  mongoose.set('debug', true);
+}
 
 //Models & routes
 require('./src/models/Users');
+require('./src/models/Jobs');
 require('./src/config/passport');
-app.use(require('./src/'));
+
+app.use(require('./src/routes.js'));
 
 //Error handlers & middlewares
 if(!isProduction) {
@@ -68,4 +79,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3001, () => console.log('Server running on http://localhost:3001/'));
+if(!isProduction){
+  app.listen(LOCAL_PORT, () => console.log(`Server running on http://localhost:/${LOCAL_PORT}`));
+}
