@@ -11,6 +11,7 @@
     "start": "NODE_ENV=production node app.js"
   },
   "dependencies": {
+    "bunyan": "^1.8.12",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",
