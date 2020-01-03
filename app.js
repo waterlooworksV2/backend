@@ -53,6 +53,7 @@ if(!isProduction) {
 //Models & routes
 require('./src/models/Users');
 require('./src/models/Jobs');
+require('./src/models/Lists');
 require('./src/config/passport');
 
 app.use(require('./src/routes.js'));

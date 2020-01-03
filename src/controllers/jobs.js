@@ -1,9 +1,6 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../middleware/auth');
 const jobService = require('../services/jobService');
-const Jobs = mongoose.model('jobs_complete');
 
 router.get('/full/:jobid', auth.required, async (req, res, next) => {
   const { payload: { id } } = req;

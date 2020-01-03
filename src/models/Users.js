@@ -13,6 +13,7 @@ const UsersSchema = new Schema({
   },
   hash: String,
   salt: String,
+  lists: [mongoose.Types.ObjectId]
 });
 
 UsersSchema.methods.setPassword = function(password) {
