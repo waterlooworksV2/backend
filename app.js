@@ -36,6 +36,11 @@ app.use(session({
   resave: false, 
   saveUninitialized: false 
 }));
+// Setup context for pagination
+app.use((req, res, next) => {
+  req.context = req.context || {};
+  next();
+});
 
 //Configure Mongoose
 mongoose.connect(process.env.DB_URI,
@@ -47,7 +52,7 @@ mongoose.connect(process.env.DB_URI,
 
 if(!isProduction) {
   app.use(errorHandler());
-  mongoose.set('debug', true);
+  // mongoose.set('debug', true);
 }
 
 //Models & routes

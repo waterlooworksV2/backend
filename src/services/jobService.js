@@ -9,13 +9,14 @@ const previewById = id => Jobs.findById(id).select({
   "Job Title:": 1, 
   "Organization:": 1, 
   "_id" : 1, 
-  "Job Summary:": 1
+  "Job Summary:": 1,
+  "cover_letter": 1,
 });
 
 const findAll = query => Jobs.findAll(query);
 
 const search = query => new Promise((resolve, reject) => {
-  Jobs.esSearch(query, (err, res) => {
+  Jobs.search(query.query, {hydrate: true, ...query.pagination},(err, res) => {
     if (err) {
       console.log(err);
       return reject(err);
