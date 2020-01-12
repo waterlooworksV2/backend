@@ -34,6 +34,7 @@ router.get('/:jobid', auth.required, async (req, res, next) => {
         index['Job Summary:'].replace('\n\n','\n').substring(0, 400 - 3) + "..." :
         index['Job Summary:'].replace('\n\n','\n').substring(0, 400),
       'cover_letter': index['cover_letter'],
+      'color': index['color'],
     } : index;
     return index ? res.send(index) : res.status(404).json({ message: `index ${id} not found` })
   } catch(e) {

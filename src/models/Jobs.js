@@ -149,6 +149,9 @@ const JobSchema = new Schema({
  'count': {
    type: Number,
    es_indexed: true
+ },
+ 'color': {
+   type: String,
  }
 },
 {

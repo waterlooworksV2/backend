@@ -8,12 +8,6 @@ const { Schema } = mongoose;
 const { SECRET } = process.env
 
 const ListsSchema = new Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true,
-  },
   name: String,
   description: String,
   owner: {
@@ -40,7 +34,12 @@ ListsSchema.methods.toJSON = function() {
     jobIDs: this.jobIDs,
     public: this.public,
     accessible: this.accessible,
+    numJobs: this.numJobs,
   };
 };
+
+ListsSchema.virtual('numJobs').get(function () {
+  return this.jobIDs.length;
+})
 
 const List = mongoose.model('Lists', ListsSchema);

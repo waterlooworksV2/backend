@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const auth = require('../middleware/auth');
+const isPaginated = require('../policies/isPaginated');
 const Lists = mongoose.model('Lists');
 const Jobs = mongoose.model('jobs_complete');
 const Users = mongoose.model('Users');
@@ -26,6 +27,7 @@ router.post('/:listid/:jobid', auth.required, async (req, res, next) => {
 
 router.delete('/:listid/:jobid', auth.required, async (req, res, next) => {
   const jobid = String(req.params.jobid);
+  const { payload: { id } } = req;
   const job = await Jobs.findById(jobid);
   if(!job) {
     return res.sendStatus(400);
@@ -44,10 +46,36 @@ router.delete('/:listid/:jobid', auth.required, async (req, res, next) => {
   }
 });
 
-router.get('/:listid/', auth.required, async (req, res, next) => {
+router.get('/:listid/preview', auth.required, async (req, res, next) => {
   const listid = String(req.params.listid);
   try {
     const list = await Lists.findById(listid);
+    return res.json(list.toJSON())
+  } catch(err) {
+    console.log(err)
+    next(err);
+  }
+  return res.json({
+    listid: listid,
+    status: 'deleted',
+  });
+});
+
+router.get('/:listid/', [auth.required, isPaginated], async (req, res, next) => {
+  const listid = String(req.params.listid);
+  const { pageSize, page } = req.context.pagination;
+  try {
+    const list = await Lists.findById(listid).populate({
+      path: 'jobIDs',
+      options: {
+        skip: 0,
+        limit: pageSize,
+      },
+      select: {
+        "Job Title:": 1,
+        "Organization:": 1,
+      }
+    });
     return res.json(list.toJSON())
   } catch(err) {
     console.log(err)
@@ -63,7 +91,7 @@ router.delete('/:listid/', auth.required, async (req, res, next) => {
   const listid = String(req.params.listid);
   const { payload: { id } } = req;
   try {
-    const list = await Lists.findById(listid);
+    const list = await Lists.findById(listid)
     if(list.owner != id){
       return res.sendStatus(401);
     }
@@ -93,10 +121,14 @@ router.get('/', auth.required, async (req, res, next) => {
   
   if(populate){
     lists = await Lists.find({owner: id})
-      .populate('jobIDs', {
-        "Job Title:": 1,
-        "Organization:": 1,
-      });
+      .populate({
+        path: 'jobIDs',
+        options:{},
+        select: {
+          "Job Title:": 1,
+          "Organization:": 1,
+        }
+      },);
   } else {
     lists = await Lists.find({owner: id})
   }
@@ -125,6 +157,7 @@ router.post('/', auth.required, async (req, res, next) => {
     });
   }
   const newList = new Lists(list);
+  console.log(newList, "HERE")
   newList.owner = user;
   try {
     await newList.save();

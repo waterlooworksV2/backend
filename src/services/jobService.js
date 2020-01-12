@@ -11,6 +11,7 @@ const previewById = id => Jobs.findById(id).select({
   "_id" : 1, 
   "Job Summary:": 1,
   "cover_letter": 1,
+  "color": 1,
 });
 
 const findAll = query => Jobs.findAll(query);
