@@ -15,6 +15,7 @@ const ListsSchema = new Schema({
     auto: true,
   },
   name: String,
+  description: String,
   owner: {
     type: mongoose.Types.ObjectId,
     ref: Users
@@ -22,6 +23,11 @@ const ListsSchema = new Schema({
   jobIDs: [{
     type: String,
     ref: Jobs
+  }],
+  public: Boolean,
+  accessible: [{
+    type: mongoose.Types.ObjectId,
+    ref: Users
   }]
 });
 
@@ -30,7 +36,10 @@ ListsSchema.methods.toJSON = function() {
     _id: this._id,
     owner: this.owner,
     name: this.name,
+    description: this.description,
     jobIDs: this.jobIDs,
+    public: this.public,
+    accessible: this.accessible,
   };
 };
 

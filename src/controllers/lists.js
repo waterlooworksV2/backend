@@ -28,11 +28,14 @@ router.delete('/:listid/:jobid', auth.required, async (req, res, next) => {
   const jobid = String(req.params.jobid);
   const job = await Jobs.findById(jobid);
   if(!job) {
-    return res.sendStatus(401);
+    return res.sendStatus(400);
   }
   const listid = String(req.params.listid);
   try {
     const list = await Lists.findById(listid);
+    if(list.owner != id){
+      return res.sendStatus(401);
+    }
     list.jobIDs.remove(job);
     list.save()
     res.json({ list: list.toJSON() });
@@ -58,8 +61,12 @@ router.get('/:listid/', auth.required, async (req, res, next) => {
 
 router.delete('/:listid/', auth.required, async (req, res, next) => {
   const listid = String(req.params.listid);
+  const { payload: { id } } = req;
   try {
     const list = await Lists.findById(listid);
+    if(list.owner != id){
+      return res.sendStatus(401);
+    }
     if(list){
       list.deleteOne();
     } else {
@@ -81,10 +88,18 @@ router.delete('/:listid/', auth.required, async (req, res, next) => {
 
 router.get('/', auth.required, async (req, res, next) => {
   const { payload: { id } } = req;
-  const lists = await Lists.find({owner: id})
-  //.populate({
-  //     path: 'jobIDs'
-  //   });
+  const populate = Boolean(req.query.populate);
+  let lists;
+  
+  if(populate){
+    lists = await Lists.find({owner: id})
+      .populate('jobIDs', {
+        "Job Title:": 1,
+        "Organization:": 1,
+      });
+  } else {
+    lists = await Lists.find({owner: id})
+  }
   if(!lists) {
     return res.sendStatus(401);
   }
