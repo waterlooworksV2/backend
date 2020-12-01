@@ -15,7 +15,7 @@
     "chai": "^4.1.2",
     "connect-cas": "^1.8.1",
     "cookie-parser": "~1.4.3",
-    "debug": "^3.1.0",
+    "debug": "^4.3.1",
     "dotenv": "^6.0.0",
     "elasticsearch": "^15.1.1",
     "express": "~4.16.0",
