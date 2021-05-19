@@ -6,73 +6,70 @@ const isPaginated = require('../policies/isPaginated');
 router.get('/', [auth.required, isPaginated], async (req, res, next) => {
   const { payload: { id } } = req;
   const { pageSize, page } = req.context.pagination;
-  var query = [];
-  if(req.query.q === "") {
-    var match_all = {};
-    query = {
-      query: {
-        match_all: match_all,
+  
+  let count_query = [
+    { '$count': 'total_hits' },
+  ];
+  
+  let query = [
+    { '$skip': page*pageSize },
+    { '$limit': pageSize },
+  ];
+  if(req.query.q.length != 0){
+    const search_query = [{
+        '$search': {
+          'index': 'default', 
+          'text': {
+            'query': req.query.q, 
+            'path': {
+              'wildcard': '*'
+            }
+          }
+        }
       },
-      pagination: {
-        from: page*pageSize,
-        size: pageSize,
-        sort: {
-          'Number of Job Openings:' : {"order" : "desc"}
-        },
-      },
-      
-    };
-  } else {
-    const multi_match = {};
-    if (req.query.q) {
-      multi_match.query = req.query.q;
-      multi_match.fields=['_id', 'Job Title:', 'Targeted Degrees and Disciplines:', 'Organization:'];
-    }
-    query = {
-      pagination: {
-        from: page*pageSize,
-        size: pageSize
-      },
-      query: {
-        bool :{
-          "should": [
-            { "match": { '_id:':req.query.q }},
-            { "match": { 'Job Title:':req.query.q }},
-            { "match": { 'Targeted Degrees and Disciplines:':req.query.q }},
-            { "match": { 'Organization:':req.query.q }}
-          ],
-          'filter': [
-            {"match": {
-                "Job - Country:": "United States"
-              }}
-          ]
+      {
+        '$project': {
+          'id': 1, 
+          'score': {
+            '$meta': 'searchScore'
+          }
         }
       }
-    };
-    // query = {
-    //   size: pageSize,
-    //   from: pageSize * page,
-    //   query: {
-    //     bool :{
-    //       "should": [
-    //         { "match": { 'Targeted Degrees and Disciplines:':req.query.q }}
-    //       ]
-    //     }
-    //   }
-    // };
-  }
+    ]
+
+    const sort_query = [
+      {
+        '$sort': {
+          'score': -1, 
+          'id': 1
+        }
+      }
+    ]
+    query = search_query.concat(sort_query).concat(query);
+    count_query = search_query.concat(count_query);
+  } 
+  
+  let count;
   try {
-    const results = await jobService.search(query);
-    const docs = results.hits.hits;
+    const count_result = await jobService.aggregate(count_query);
+    count = count_result[0].total_hits;
+  } catch (e) {
+    next(e);
+    return;
+  }
+  
+  try {
+    const results = await jobService.aggregate(query);
     var ids = [];
-    for(i in docs){
-      ids.push(parseInt(docs[i]["_id"]))
+    for(const i of results){
+      ids.push(parseInt(i['id']));
     }
-    console.log(results)
-    res.json({"pages": Math.ceil(results.hits.total/pageSize), "ids": ids});
+    res.json({'pages': Math.ceil(count/pageSize), 'ids': ids});
   } catch (e) {
     next(e);
   }
+
+  
 });
 
 

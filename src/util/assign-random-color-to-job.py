@@ -1,7 +1,12 @@
 import pymongo
 import random
+import ssl
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
+
+client = pymongo.MongoClient(config.get("DB_URI"), ssl_cert_reqs=ssl.CERT_NONE)
 
 jobs_f19 = client["jobs_f19"]
 

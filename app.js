@@ -88,6 +88,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-if(!isProduction){
-  app.listen(LOCAL_PORT, () => console.log(`Server running on http://localhost:/${LOCAL_PORT}`));
-}
+app.listen(process.env.PORT || LOCAL_PORT, () => console.log(`Server running on http://localhost:/${LOCAL_PORT}`));
