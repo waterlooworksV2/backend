@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "bunyan": "^1.8.12",
+    "connect-mongodb-session": "^2.4.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",

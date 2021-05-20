@@ -4,7 +4,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
+const passport = require('passport');
 const mongoose = require('mongoose');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const errorHandler = require('errorhandler');
 const { logMiddleware } = require('./src/util/log');
 
@@ -28,14 +30,30 @@ app.use(bodyParser.urlencoded({
   extended: true 
 }));
 app.use(bodyParser.json());
+
+const store = new MongoDBStore({
+  uri: process.env.DB_URI,
+  collection: 'login_sessions'
+});
+
+// Catch errors
+store.on('error', function(error) {
+  console.log(error);
+});
+
 app.use(session({ 
   secret: SECRET, 
   cookie: { 
     maxAge: 60000 
   }, 
+  store: store,
   resave: false, 
   saveUninitialized: false 
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Setup context for pagination
 app.use((req, res, next) => {
   req.context = req.context || {};
@@ -49,6 +67,7 @@ mongoose.connect(process.env.DB_URI,
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
+
 
 if(!isProduction) {
   app.use(errorHandler());
@@ -76,6 +95,7 @@ if(!isProduction) {
   });
 }
 
+
 app.use((err, req, res, next) => {
   console.log(err)
   res.status(err.status || 500);
@@ -88,4 +108,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT || LOCAL_PORT, () => console.log(`Server running on http://localhost:/${LOCAL_PORT}`));
+app.listen(process.env.PORT || LOCAL_PORT, () => console.log(`Server running on port ${process.env.PORT || LOCAL_PORT}`));

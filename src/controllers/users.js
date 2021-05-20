@@ -62,7 +62,7 @@ router.delete('/', auth.required, async (req, res, next) => {
     
 });
 
-router.post('/login', auth.optional, async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   const { body: { user } } = req;
   if(!user.email) {
     return res.status(422).json({

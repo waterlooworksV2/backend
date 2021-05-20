@@ -8,7 +8,9 @@ config = dotenv_values(".env")
 
 client = pymongo.MongoClient(config.get("DB_URI"), ssl_cert_reqs=ssl.CERT_NONE)
 
-jobs_f19 = client["jobs_f19"]
+print(config.get("DB_URI"))
+
+jobs_f19 = client["jobs_complete"]
 
 jobs_complete = jobs_f19["jobs_complete"]
 
